@@ -15,13 +15,11 @@ namespace UserService.Functions
 {
     public class UserRegistrationFunc
     {
-        private readonly IConfiguration _config;
         private readonly CosmosClient _cosmosClient;
         
-        public UserRegistrationFunc(CosmosClient cosmosClient, IConfiguration config)
+        public UserRegistrationFunc(CosmosClient cosmosClient)
         {
             _cosmosClient = cosmosClient;
-            _config = config;
         }
 
         [FunctionName("UserRegistration")]
