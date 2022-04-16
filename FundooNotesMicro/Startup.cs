@@ -1,11 +1,14 @@
-﻿using Microsoft.Azure.Cosmos.Fluent;
+﻿using System;
+using System.Reflection;
+using AzureFunctions.Extensions.Swashbuckle;
+using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using UserService;
 
-[assembly: FunctionsStartup(typeof(Startup))]
+[assembly: FunctionsStartup(typeof(UserService.Startup))]
 
 namespace UserService
 {
@@ -34,5 +37,9 @@ namespace UserService
                         .Build();
             });
         }
+
+        
     }
+
+    
 }
