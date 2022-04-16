@@ -27,19 +27,19 @@ namespace UserService.Functions
                 DocumentClient client,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
-            string name = req.Query["name"];
+            log.LogInformation("C# HTTP trigger function processed a request for Forget Password.");
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var data = JsonConvert.DeserializeObject<ForgetPassword>(requestBody);
 
+            var option = new FeedOptions { EnableCrossPartitionQuery = true };
             Uri collectionUri = UriFactory.CreateDocumentCollectionUri("UserDB", "UserDetails");
-            var document = client.CreateDocumentQuery<UserRegModel>(collectionUri).Where(t => t.Email == data.Email)
+            var document = client.CreateDocumentQuery<UserRegModel>(collectionUri, option).Where(t => t.Email == data.Email)
                     .AsEnumerable().FirstOrDefault();
             if (document != null)
             {
                 var token = this.auth.IssuingToken(document.Id.ToString());
+                new MSMQ().MSMQSender(token);
                 return new OkObjectResult(token);
 
             }
